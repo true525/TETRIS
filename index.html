@@ -3,6 +3,7 @@
 <body>
 
 <canvas id="gameCanvas" width="800" height="200"></canvas>
+<button id="jumpButton" style="position:absolute;top:20px;left:20px;">Jump</button>
 
 <script>
 var canvas = document.getElementById('gameCanvas');
@@ -73,7 +74,7 @@ function draw() {
   moveObstacle();
 }
 
-canvas.addEventListener("mousedown", jump, false);
+document.getElementById("jumpButton").addEventListener("click", jump, false);
 canvas.addEventListener("touchstart", jump, false);
 
 setInterval(draw, 10);
