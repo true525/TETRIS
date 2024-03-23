@@ -11,9 +11,11 @@
 </head>
 <body>
     <canvas id="gameCanvas" width="480" height="320"></canvas>
+    <audio id="bounceSound" src="bounce.mp3" preload="auto"></audio>
     <script>
         var canvas = document.getElementById('gameCanvas');
         var ctx = canvas.getContext('2d');
+        var bounceSound = document.getElementById('bounceSound');
 
         var ball = {
             x: canvas.width / 2,
@@ -36,12 +38,25 @@
             drawBall();
             if(ball.x + ball.dx > canvas.width-ball.radius || ball.x + ball.dx < ball.radius) {
                 ball.dx = -ball.dx;
+                bounceSound.play();
+                document.body.style.backgroundColor = getRandomColor();
             }
             if(ball.y + ball.dy > canvas.height-ball.radius || ball.y + ball.dy < ball.radius) {
                 ball.dy = -ball.dy;
+                bounceSound.play();
+                document.body.style.backgroundColor = getRandomColor();
             }
             ball.x += ball.dx;
             ball.y += ball.dy;
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
         }
 
         canvas.addEventListener('click', function(event) {
