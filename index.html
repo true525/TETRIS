@@ -1,84 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スネークゲーム</title>
+</head>
 <body>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
-<canvas id="gameCanvas" width="800" height="200"></canvas>
-<button id="jumpButton" style="position:absolute;top:20px;left:20px;">Jump</button>
+    // プレイヤーの初期位置
+    let playerX = 100;
+    let playerY = 100;
 
-<script>
-var canvas = document.getElementById('gameCanvas');
-var ctx = canvas.getContext('2d');
+    // エサの初期位置
+    let foodX = 200;
+    let foodY = 200;
 
-// Dinosaur
-var dinosaurHeight = 50;
-var dinosaurY = canvas.height - dinosaurHeight;
-var dinosaurSpeed = 2;
+    // ゲームループ
+    function gameLoop() {
+      // 画面をクリア
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-// Obstacle
-var obstacleWidth = 20;
-var obstacleHeight = 40;
-var obstacleX = canvas.width;
-var obstacleY = canvas.height - obstacleHeight;
-var obstacleSpeed = 2;
+      // プレイヤーを描画
+      ctx.fillStyle = "green";
+      ctx.fillRect(playerX, playerY, 20, 20);
 
-function drawDinosaur() {
-  ctx.beginPath();
-  ctx.rect(50, dinosaurY, 20, dinosaurHeight);
-  ctx.fillStyle = "#0095DD";
-  ctx.fill();
-  ctx.closePath();
-}
+      // エサを描画
+      ctx.fillStyle = "red";
+      ctx.fillRect(foodX, foodY, 20, 20);
 
-function drawObstacle() {
-  ctx.beginPath();
-  ctx.rect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
-  ctx.fillStyle = "#0095DD";
-  ctx.fill();
-  ctx.closePath();
-}
+      // プレイヤーの移動
+      if (window.addEventListener("keydown", (event) => {
+        switch (event.key) {
+          case "ArrowUp":
+            playerY -= 20;
+            break;
+          case "ArrowDown":
+            playerY += 20;
+            break;
+          case "ArrowLeft":
+            playerX -= 20;
+            break;
+          case "ArrowRight":
+            playerX += 20;
+            break;
+        }
+      }));
 
-function jump() {
-  dinosaurY -= dinosaurSpeed;
-  if (dinosaurY < 0) {
-    dinosaurY = 0;
-  }
-}
+      // プレイヤーとエサの衝突判定
+      if (playerX === foodX && playerY === foodY) {
+        // エサをランダムな位置に再配置
+        foodX = Math.floor(Math.random() * canvas.width);
+        foodY = Math.floor(Math.random() * canvas.height);
+      }
 
-function fall() {
-  dinosaurY += dinosaurSpeed;
-  if (dinosaurY > canvas.height - dinosaurHeight) {
-    dinosaurY = canvas.height - dinosaurHeight;
-  }
-}
+      // 再描画
+      requestAnimationFrame(gameLoop);
+    }
 
-function moveObstacle() {
-  obstacleX -= obstacleSpeed;
-  if (obstacleX < 0) {
-    obstacleX = canvas.width;
-  }
-}
-
-function detectCollision() {
-  if (obstacleX < 70 && obstacleX > 50 && dinosaurY + dinosaurHeight > obstacleY) {
-    alert("Game Over");
-    document.location.reload();
-  }
-}
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawDinosaur();
-  drawObstacle();
-  detectCollision();
-  fall();
-  moveObstacle();
-}
-
-document.getElementById("jumpButton").addEventListener("click", jump, false);
-canvas.addEventListener("touchstart", jump, false);
-
-setInterval(draw, 10);
-</script>
-
+    // ゲームスタート
+    gameLoop();
+  </script>
 </body>
 </html>
