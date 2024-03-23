@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tetris</title>
+  <style>
+    #board {
+      border: 1px solid black;
+      display: inline-grid;
+      grid-template-columns: repeat(10, 30px);
+      grid-template-rows: repeat(20, 30px);
+    }
+    .cell {
+      border: 1px solid gray;
+    }
+    .tetromino {
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+  <div id="board">
+    <div class="cell"></div>
+    <!-- ここに200個のdiv.cellが生成される -->
+  </div>
+
+  <script>
+    const board = document.getElementById('board');
+    const cells = Array.from(board.children);
+    const width = 10;
+    const height = 20;
+
+    // テトロミノの形状
+    const tetrominos = [
+      [1, 1, 1, 1], // I
+      [1, 1, 0, 0, 1, 1], // O
+      [1, 1, 1, 0, 0, 0], // T
+      [1, 1, 0, 0, 1, 1], // S
+      [1, 0, 0, 1, 1, 1], // Z
+      [0, 1, 1, 1, 1, 0], // J
+      [1, 1, 1, 0, 0, 1], // L
+    ];
+
+    let currentTetromino = tetrominos[0];
+    let currentPosition = 4;
+
+    // ゲームループ
+    function gameLoop() {
+      // ゲームロジックを実装する
+    }
+
+    // テトロミノを描画する
+    function drawTetromino() {
+      cells.forEach(cell => cell.classList.remove('tetromino'));
+      currentTetromino.forEach((value, index) => {
+        if (value) {
+          cells[currentPosition + index].classList.add('tetromino');
+        }
+      });
+    }
+
+    // 矢印キーのイベントリスナーを設定する
+    document.addEventListener('keydown', event => {
+      switch (event.key) {
+        case 'ArrowLeft':
+          // 左に移動する
+          break;
+        case 'ArrowRight':
+          // 右に移動する
+          break;
+        case 'ArrowDown':
+          // 下に移動する
+          break;
+        case 'ArrowUp':
+          // テトロミノを回転させる
+          break;
+      }
+    });
+
+    // ゲームを開始する
+    drawTetromino();
+    gameLoop();
+  </script>
+</body>
+</html>
