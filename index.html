@@ -1,84 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tetris</title>
-  <style>
-    #board {
-      border: 1px solid black;
-      display: inline-grid;
-      grid-template-columns: repeat(10, 30px);
-      grid-template-rows: repeat(20, 30px);
-    }
-    .cell {
-      border: 1px solid gray;
-    }
-    .tetromino {
-      background-color: blue;
-    }
-  </style>
+    <title>8パズル</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="layout.css">
+    <script type="text/javascript" src="puzzle.js"></script>
 </head>
 <body>
-  <div id="board">
-    <div class="cell"></div>
-    <!-- ここに200個のdiv.cellが生成される -->
-  </div>
-
-  <script>
-    const board = document.getElementById('board');
-    const cells = Array.from(board.children);
-    const width = 10;
-    const height = 20;
-
-    // テトロミノの形状
-    const tetrominos = [
-      [1, 1, 1, 1], // I
-      [1, 1, 0, 0, 1, 1], // O
-      [1, 1, 1, 0, 0, 0], // T
-      [1, 1, 0, 0, 1, 1], // S
-      [1, 0, 0, 1, 1, 1], // Z
-      [0, 1, 1, 1, 1, 0], // J
-      [1, 1, 1, 0, 0, 1], // L
-    ];
-
-    let currentTetromino = tetrominos[0];
-    let currentPosition = 4;
-
-    // ゲームループ
-    function gameLoop() {
-      // ゲームロジックを実装する
-    }
-
-    // テトロミノを描画する
-    function drawTetromino() {
-      cells.forEach(cell => cell.classList.remove('tetromino'));
-      currentTetromino.forEach((value, index) => {
-        if (value) {
-          cells[currentPosition + index].classList.add('tetromino');
-        }
-      });
-    }
-
-    // 矢印キーのイベントリスナーを設定する
-    document.addEventListener('keydown', event => {
-      switch (event.key) {
-        case 'ArrowLeft':
-          // 左に移動する
-          break;
-        case 'ArrowRight':
-          // 右に移動する
-          break;
-        case 'ArrowDown':
-          // 下に移動する
-          break;
-        case 'ArrowUp':
-          // テトロミノを回転させる
-          break;
-      }
-    });
-
-    // ゲームを開始する
-    drawTetromino();
-    gameLoop();
-  </script>
+    <center>
+        <h1>8パズル</h1>
+        <div id="puzzle">
+            <button id="t0" class="btn btn-secondary tile" onclick="pushed(this.id)"></button>
+            <button id="t1" class="btn btn-secondary tile" onclick="pushed(this.id)">1</button>
+            <button id="t2" class="btn btn-secondary tile" onclick="pushed(this.id)">2</button><br />
+            <button id="t3" class="btn btn-secondary tile" onclick="pushed(this.id)">3</button>
+            <button id="t4" class="btn btn-secondary tile" onclick="pushed(this.id)">4</button>
+            <button id="t5" class="btn btn-secondary tile" onclick="pushed(this.id)">5</button><br />
+            <button id="t6" class="btn btn-secondary tile" onclick="pushed(this.id)">6</button>
+            <button id="t7" class="btn btn-secondary tile" onclick="pushed(this.id)">7</button>
+            <button id="t8" class="btn btn-secondary tile" onclick="pushed(this.id)">8</button>
+        </div>
+        <br>
+        <button class="btn btn-primary" onclick="randomTaslar()">シャッフル</button>
+    </center>
 </body>
 </html>
