@@ -73,7 +73,8 @@ function draw() {
   moveObstacle();
 }
 
-document.addEventListener("keydown", jump, false);
+canvas.addEventListener("mousedown", jump, false);
+canvas.addEventListener("touchstart", jump, false);
 
 setInterval(draw, 10);
 </script>
