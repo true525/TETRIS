@@ -2,68 +2,68 @@
 <html>
 <head>
     <style>
-        #gameCanvas {
-            background: #000;
-            display: block;
-            margin: 0 auto;
-        }
+        #board { position: relative; height: 300px; width: 150px; border: 1px solid black; }
+        .block { position: absolute; height: 30px; width: 30px; }
+        .block1 { background: red; }
+        .block2 { background: yellow; }
+        .block3 { background: blue; }
+        #keyboard { display: flex; justify-content: center; margin-top: 20px; }
+        .key { border: 1px solid black; padding: 10px; margin: 5px; text-align: center; }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="480" height="320"></canvas>
-    <audio id="bounceSound" src="bounce.mp3" preload="auto"></audio>
+    <div id="score">Score: 0</div>
+    <div id="board"></div>
+    <div id="keyboard">
+        <div class="key">←</div>
+        <div class="key">↑</div>
+        <div class="key">↓</div>
+        <div class="key">→</div>
+    </div>
+
     <script>
-        var canvas = document.getElementById('gameCanvas');
-        var ctx = canvas.getContext('2d');
-        var bounceSound = document.getElementById('bounceSound');
+        var board = document.getElementById('board');
+        var scoreBoard = document.getElementById('score');
+        var blockTypes = ['block1', 'block2', 'block3'];
+        var blockSize = 30;
+        var score = 0;
+        var blockInterval = setInterval(dropBlock, 1000);
 
-        var ball = {
-            x: canvas.width / 2,
-            y: canvas.height - 30,
-            dx: 2,
-            dy: -2,
-            radius: 10
-        };
+        function dropBlock() {
+            var blockType = blockTypes[Math.floor(Math.random() * blockTypes.length)];
+            var block = document.createElement('div');
+            block.className = 'block ' + blockType;
+            block.style.left = Math.floor(Math.random() * (board.clientWidth / blockSize)) * blockSize + 'px';
+            board.appendChild(block);
 
-        function drawBall() {
-            ctx.beginPath();
-            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2);
-            ctx.fillStyle = "#0095DD";
-            ctx.fill();
-            ctx.closePath();
+            var blockDrop = setInterval(function() {
+                block.style.top = (block.offsetTop + blockSize) + 'px';
+                if (block.offsetTop + blockSize > board.clientHeight) {
+                    clearInterval(blockDrop);
+                    score++;
+                    scoreBoard.innerText = 'Score: ' + score;
+                }
+            }, 100);
         }
 
-        function updateGame() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBall();
-            if(ball.x + ball.dx > canvas.width-ball.radius || ball.x + ball.dx < ball.radius) {
-                ball.dx = -ball.dx;
-                bounceSound.play();
-                document.body.style.backgroundColor = getRandomColor();
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                // Move block to the left
+            } else if (e.key === 'ArrowRight') {
+                // Move block to the right
+            } else if (e.key === 'ArrowDown') {
+                // Speed up block drop
+            } else if (e.key === 'ArrowUp') {
+                // Rotate block
             }
-            if(ball.y + ball.dy > canvas.height-ball.radius || ball.y + ball.dy < ball.radius) {
-                ball.dy = -ball.dy;
-                bounceSound.play();
-                document.body.style.backgroundColor = getRandomColor();
-            }
-            ball.x += ball.dx;
-            ball.y += ball.dy;
+        });
+
+        var keys = document.getElementsByClassName('key');
+        for (var i = 0; i < keys.length; i++) {
+            keys[i].addEventListener('click', function(e) {
+                alert('You pressed the ' + e.target.innerText + ' key');
+            });
         }
-
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-
-        canvas.addEventListener('click', function(event) {
-            ball.dy = -ball.dy;
-        }, false);
-
-        setInterval(updateGame, 10);
     </script>
 </body>
 </html>
