@@ -1,69 +1,82 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <style>
-        #board { position: relative; height: 300px; width: 150px; border: 1px solid black; }
-        .block { position: absolute; height: 30px; width: 30px; }
-        .block1 { background: red; }
-        .block2 { background: yellow; }
-        .block3 { background: blue; }
-        #keyboard { display: flex; justify-content: center; margin-top: 20px; }
-        .key { border: 1px solid black; padding: 10px; margin: 5px; text-align: center; }
-    </style>
-</head>
 <body>
-    <div id="score">Score: 0</div>
-    <div id="board"></div>
-    <div id="keyboard">
-        <div class="key">←</div>
-        <div class="key">↑</div>
-        <div class="key">↓</div>
-        <div class="key">→</div>
-    </div>
 
-    <script>
-        var board = document.getElementById('board');
-        var scoreBoard = document.getElementById('score');
-        var blockTypes = ['block1', 'block2', 'block3'];
-        var blockSize = 30;
-        var score = 0;
-        var blockInterval = setInterval(dropBlock, 1000);
+<canvas id="gameCanvas" width="800" height="200"></canvas>
 
-        function dropBlock() {
-            var blockType = blockTypes[Math.floor(Math.random() * blockTypes.length)];
-            var block = document.createElement('div');
-            block.className = 'block ' + blockType;
-            block.style.left = Math.floor(Math.random() * (board.clientWidth / blockSize)) * blockSize + 'px';
-            board.appendChild(block);
+<script>
+var canvas = document.getElementById('gameCanvas');
+var ctx = canvas.getContext('2d');
 
-            var blockDrop = setInterval(function() {
-                block.style.top = (block.offsetTop + blockSize) + 'px';
-                if (block.offsetTop + blockSize > board.clientHeight) {
-                    clearInterval(blockDrop);
-                    score++;
-                    scoreBoard.innerText = 'Score: ' + score;
-                }
-            }, 100);
-        }
+// Dinosaur
+var dinosaurHeight = 50;
+var dinosaurY = canvas.height - dinosaurHeight;
+var dinosaurSpeed = 2;
 
-        window.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowLeft') {
-                // Move block to the left
-            } else if (e.key === 'ArrowRight') {
-                // Move block to the right
-            } else if (e.key === 'ArrowDown') {
-                // Speed up block drop
-            } else if (e.key === 'ArrowUp') {
-                // Rotate block
-            }
-        });
+// Obstacle
+var obstacleWidth = 20;
+var obstacleHeight = 40;
+var obstacleX = canvas.width;
+var obstacleY = canvas.height - obstacleHeight;
+var obstacleSpeed = 2;
 
-        var keys = document.getElementsByClassName('key');
-        for (var i = 0; i < keys.length; i++) {
-            keys[i].addEventListener('click', function(e) {
-                alert('You pressed the ' + e.target.innerText + ' key');
-            });
-        }
-    </script>
+function drawDinosaur() {
+  ctx.beginPath();
+  ctx.rect(50, dinosaurY, 20, dinosaurHeight);
+  ctx.fillStyle = "#0095DD";
+  ctx.fill();
+  ctx.closePath();
+}
+
+function drawObstacle() {
+  ctx.beginPath();
+  ctx.rect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
+  ctx.fillStyle = "#0095DD";
+  ctx.fill();
+  ctx.closePath();
+}
+
+function jump() {
+  dinosaurY -= dinosaurSpeed;
+  if (dinosaurY < 0) {
+    dinosaurY = 0;
+  }
+}
+
+function fall() {
+  dinosaurY += dinosaurSpeed;
+  if (dinosaurY > canvas.height - dinosaurHeight) {
+    dinosaurY = canvas.height - dinosaurHeight;
+  }
+}
+
+function moveObstacle() {
+  obstacleX -= obstacleSpeed;
+  if (obstacleX < 0) {
+    obstacleX = canvas.width;
+  }
+}
+
+function detectCollision() {
+  if (obstacleX < 70 && obstacleX > 50 && dinosaurY + dinosaurHeight > obstacleY) {
+    alert("Game Over");
+    document.location.reload();
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawDinosaur();
+  drawObstacle();
+  detectCollision();
+  fall();
+  moveObstacle();
+}
+
+document.addEventListener("keydown", jump, false);
+
+setInterval(draw, 10);
+</script>
+
 </body>
 </html>
