@@ -3,66 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>スネークゲーム</title>
+  <title>幻想的なホームページ</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="canvas" width="500" height="500"></canvas>
-  <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-
-    // プレイヤーの初期位置
-    let playerX = 100;
-    let playerY = 100;
-
-    // エサの初期位置
-    let foodX = 200;
-    let foodY = 200;
-
-    // ゲームループ
-    function gameLoop() {
-      // 画面をクリア
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // プレイヤーを描画
-      ctx.fillStyle = "green";
-      ctx.fillRect(playerX, playerY, 20, 20);
-
-      // エサを描画
-      ctx.fillStyle = "red";
-      ctx.fillRect(foodX, foodY, 20, 20);
-
-      // プレイヤーの移動
-      if (window.addEventListener("keydown", (event) => {
-        switch (event.key) {
-          case "ArrowUp":
-            playerY -= 20;
-            break;
-          case "ArrowDown":
-            playerY += 20;
-            break;
-          case "ArrowLeft":
-            playerX -= 20;
-            break;
-          case "ArrowRight":
-            playerX += 20;
-            break;
-        }
-      }));
-
-      // プレイヤーとエサの衝突判定
-      if (playerX === foodX && playerY === foodY) {
-        // エサをランダムな位置に再配置
-        foodX = Math.floor(Math.random() * canvas.width);
-        foodY = Math.floor(Math.random() * canvas.height);
-      }
-
-      // 再描画
-      requestAnimationFrame(gameLoop);
-    }
-
-    // ゲームスタート
-    gameLoop();
-  </script>
+  <div class="container">
+    <h1>ようこそ！</h1>
+    <p>これは幻想的な雰囲気のホームページです。</p>
+  </div>
 </body>
 </html>
